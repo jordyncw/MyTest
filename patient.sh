@@ -25,7 +25,7 @@ echo "------------------------------------------------------"
             # List patients
             echo "You selected List patients."
             # Convert patient records to uppercase and sort them by first name, last name, phone number, and patient ID
-            awk '{print toupper($0)}' patients.csv | sort -t, -k2,2 -k3,3 -k4,4 -k1,1 | awk -F, '{printf "%s\t%s\t%s\t%s\n", $3, $2, $4, $1}'
+            awk '{print toupper($0)}' patient.csv | sort -t, -k2,2 -k3,3 -k4,4 -k1,1 | awk -F, '{printf "%s\t%s\t%s\t%s\n", $3, $2, $4, $1}'
             read -p "Press Enter to continue..."
             ;;
         [Aa])
@@ -34,7 +34,7 @@ function generate_patient_id() {
     first_name=$(echo $1 | cut -c1 | tr '[:lower:]' '[:upper:]')
     id=$last_name$first_name
     counter=2
-    while grep -q "^$id" patients.csv; do
+    while grep -q "^$id" patient.csv; do
         id="${last_name}${first_name}${counter}"
         counter=$((counter+1))
     done
@@ -52,7 +52,7 @@ function add_patient() {
     id=$(generate_patient_id "$first_name" "$last_name")
 
     # Add the patient record to the CSV file
-    echo "$id,$last_name,$first_name,$phone_number" >> patients.csv
+    echo "$id,$last_name,$first_name,$phone_number" >> patient.csv
 
     echo "The new Patient ID is $id"
     echo "The new patient is added to the patient records."
@@ -76,15 +76,15 @@ function add_patient() {
         [Dd])
 delete_patient() {
     read -p "Enter patient's last name or part of it to delete: " last_name
-    # use grep to find matching lines in patients.csv file
-    matching_records=$(grep -i "$last_name" patients.csv)
+    # use grep to find matching lines in patient.csv file
+    matching_records=$(grep -i "$last_name" patient.csv)
     if [[ -z $matching_records ]]; then
         echo "No matching records found."
     else
         echo "The following records will be deleted:"
         echo "$matching_records"
-        # use sed to delete matching lines from patients.csv file
-        sed -i "/$last_name/Id" patients.csv
+        # use sed to delete matching lines from patient.csv file
+        sed -i "/$last_name/Id" patient.csv
         echo "Records deleted successfully."
     fi
 }
