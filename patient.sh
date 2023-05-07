@@ -52,7 +52,7 @@ function add_patient() {
     id=$(generate_patient_id "$first_name" "$last_name")
 
     # Add the patient record to the CSV file
-    echo "$id,$last_name,$first_name,$phone_number" >> patient.csv
+    echo "$id,$first_name,$last_name,$phone_number" >> patient.csv
 
     echo "The new Patient ID is $id"
     echo "The new patient is added to the patient records."
