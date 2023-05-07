@@ -60,26 +60,18 @@ function add_patient() {
             add_patient
             ;;
         [Ss])
-# Define function to add a new patient
-function add_patient() {
-    # Prompt the user for patient details
-    read -p "Enter first name: " first_name
-    read -p "Enter last name: " last_name
-    read -p "Enter phone number: " phone_number
 
-    # Generate the patient ID
-    id=$(generate_patient_id "$first_name" "$last_name")
 
-    # Add the patient record to the CSV file
-    echo "$id,$last_name,$first_name,$phone_number" >> patients.csv
+# Prompt the user to enter the last name for the search
+    echo "Enter the last name to search: "
+    read lastname
 
-    echo "The new Patient ID is $id"
-    echo "The new patient is added to the patient records."
-}
-# Search patient
-            read -p "Enter a patient ID: " patient_id
-            echo "Searching for patient with ID: $patient_id..."
-            grep "^$patient_id" patients.csv
+# Convert the entered last name to lowercase for case-insensitive search
+    searchname=$(echo "$lastname" | tr '[:upper:]' '[:lower:]')
+
+# Perform the search and display matching records
+    grep -i "$searchname" patient.csv | awk -F',' '{ print $1 "\t" $2 "\t" $3 "\t" $4 }'
+
             ;;
         [Dd])
 delete_patient() {
